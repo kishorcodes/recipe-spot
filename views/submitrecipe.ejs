@@ -1,5 +1,5 @@
-<section class="pb-4 pt-4 px-3">
-  <div class="px-4 py-5 my-5 text-center">
+<section>
+  <div class="px-4 pt-5 my-5 text-center">
     <h1 class="display-5 fw-bold">Submit Your Recipe</h1>
     <div class="col-lg-6 mx-auto">
       <p class="lead">
@@ -8,21 +8,16 @@
       </p>
     </div>
   </div>
- 
-  <div class="row justify-content-center">
-    
-    <div class="col-8">
-        <% if(infoSubmit !='') { %>
-            <div class="alert alert-success" role="alert">
-              <%= infoSubmit %>
-            </div>
-        <%} %>
-        <% if(infoErrors !='') { %>
-            <div class="alert alert-danger" role="alert">
-              <%= infoErrors[0].message %>
-            </div>
-        <%} %>
 
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <% if(infoSubmit !='') { %>
+      <div class="alert alert-success" role="alert"><%= infoSubmit %></div>
+      <%} %> <% if(infoErrors !='') { %>
+      <div class="alert alert-danger" role="alert">
+        <%= infoErrors[0].message %>
+      </div>
+      <%} %>
 
       <form enctype="multipart/form-data" action="/submitrecipe" method="POST">
         <div class="row g-3">
@@ -54,7 +49,7 @@
           <div class="col-12">
             <label for="ingredients" class="form-label">Ingredients</label>
             <br />
-            <small>Example: Ice</small>
+            <small>Example: Tomatoes</small>
             <div class="ingredientList">
               <div class="ingredientDiv mb-1"></div>
               <input
@@ -91,7 +86,7 @@
           </div>
 
           <div class="col-12">
-            <label for="image">Product Image</label>
+            <label for="image">Item Image</label>
             <input
               type="file"
               class="form-control"
