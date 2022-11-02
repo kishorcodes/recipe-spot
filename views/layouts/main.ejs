@@ -46,7 +46,7 @@
         <div class="nav-items">
           <li><a href="/">Home</a></li>
           <li><a href="/categories">Categories</a></li>
-          <li><a href="#">All Recipes</a></li>
+          <li><a href="/recipes/filter/all">All Recipes</a></li>
           <li><a href="#">About Us</a></li>
           <li><a href="#">Contact</a></li>
         </div>
@@ -56,7 +56,7 @@
         <div class="cancel-icon">
           <span class="fas fa-times"></span>
         </div>
-        <form action="/search" method="POST">
+        <form action="/recipes/filter/search" method="POST">
           <input
             type="search"
             class="search-data"
@@ -76,4 +76,17 @@
       </footer>
     </div>
   </body>
+  <script>
+    document
+      .querySelector("#addIngredientsBtn")
+      ?.addEventListener("click", () => {
+        let newinput = document
+          .querySelector(".ingredient-input")
+          .cloneNode(true);
+        newinput.value = "";
+        newinput.placeholder = "Enter the ingredient";
+
+        document.querySelector(".ingredientList").appendChild(newinput);
+      });
+  </script>
 </html>

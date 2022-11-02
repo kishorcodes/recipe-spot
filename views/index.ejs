@@ -16,12 +16,12 @@
       class="my-2 d-grid gap-2 d-md-flex justify-content-md-start justify-content-start"
     >
       <a
-        href="/explore-latest"
+        href="/recipes/filter/latest"
         class="btn btn-primary btn-dark btn-lg px-4 me-md2"
         >Explore Latest</a
       >
       <a
-        href="/random-recipe"
+        href="/recipes/filter/random"
         class="btn btn-primary btn-dark btn-lg px-4 me-md2"
         >Show Random</a
       >
@@ -65,13 +65,15 @@
 <section class="pb-4 pt-4 px-2">
   <div class="d-flex mb-2 align-items-center">
     <h2>Latest Recipes</h2>
-    <a href="/latest" class="ms-auto text-decoration-none"> View More </a>
+    <a href="/recipes/filter/latest" class="ms-auto text-decoration-none">
+      View More
+    </a>
   </div>
 
   <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
     <% if(recipetypes.latest && recipetypes.latest.length >0) { %> <%
     recipetypes.latest.forEach(recipe=>{ %>
-    <a href="/recipe/<%=recipe._id %>" class="col text-center category__link">
+    <a href="/recipes/<%=recipe._id %>" class="col text-center category__link">
       <div class="category__img category__img--large shadow">
         <img
           src="uploads/<%= recipe.image %>"
@@ -90,13 +92,15 @@
 <section class="pb-4 pt-4 px-2">
   <div class="d-flex mb-2 align-items-center">
     <h2>Most Loved</h2>
-    <a href="/mostloved" class="ms-auto text-decoration-none"> View More </a>
+    <a href="/recipes/filter/mostloved" class="ms-auto text-decoration-none">
+      View More
+    </a>
   </div>
 
   <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
     <% if(recipetypes.mostloved && recipetypes.mostloved.length >0) { %> <%
     recipetypes.mostloved.forEach(recipe=>{ %>
-    <a href="/recipe/<%=recipe._id %>" class="col text-center category__link">
+    <a href="/recipes/<%=recipe._id %>" class="col text-center category__link">
       <div class="category__img category__img--large shadow">
         <img
           src="uploads/<%= recipe.image %>"
@@ -115,13 +119,15 @@
 <section class="pb-4 pt-4 px-2">
   <div class="d-flex mb-2 align-items-center">
     <h2>Unique</h2>
-    <a href="/unique" class="ms-auto text-decoration-none"> View More </a>
+    <a href="recipes/filter/unique" class="ms-auto text-decoration-none">
+      View More
+    </a>
   </div>
 
   <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
     <% if(recipetypes.unique && recipetypes.unique.length >0) { %> <%
     recipetypes.unique.forEach(recipe=>{ %>
-    <a href="/recipe/<%=recipe._id %>" class="col text-center category__link">
+    <a href="/recipes/<%=recipe._id %>" class="col text-center category__link">
       <div class="category__img category__img--large shadow">
         <img
           src="uploads/<%= recipe.image %>"
@@ -165,7 +171,7 @@
     </p>
 
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-      <a href="/submit-recipe" class="btn btn-primary btn-dark btn-lg"
+      <a href="/submitrecipe" class="btn btn-primary btn-dark btn-lg"
         >Submit Recipe</a
       >
     </div>

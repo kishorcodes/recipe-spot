@@ -38,7 +38,6 @@ exports.exploreCategories = async (req, res) => {
 exports.exploreRecipe = async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
-    console.log(recipe);
     res.render("recipe", { title: recipe.name, recipe });
   } catch (e) {
     res.render("recipe", { title: "Not found" });
@@ -50,7 +49,6 @@ exports.exploreCategoryById = async (req, res) => {
   try {
     let categoryId = req.params.id;
     const limit = 20;
-    console.log(categoryId);
     const categoryById = await Recipe.find({
       category: categoryId,
     }).limit(limit);
@@ -66,9 +64,81 @@ exports.exploreCategoryById = async (req, res) => {
 exports.searchRecipe = async (req, res) => {
   try {
     let searchTerm = req.body.searchTerm;
-    let recipeResults = await Recipe.find({
+    let recipes = await Recipe.find({
       $text: { $search: searchTerm, $diacriticSensitive: true },
     });
-    res.render("reciperesults", { title: "Search Results", recipeResults });
+    res.render("reciperesults", { title: "Search Results", recipes });
   } catch (e) {}
+};
+
+exports.exploreLatest = async (req, res) => {
+  try {
+    const limit = 20;
+    const recipes = await Recipe.find({}).sort({ _id: -1 }).limit(limit);
+    res.render("reciperesults", { title: "Latest", recipes });
+  } catch (e) {}
+};
+
+exports.exploreRandom = async (req, res) => {
+  try {
+    let count = await Recipe.find().countDocuments();
+    let randomNumber = Math.floor(Math.random() * count);
+    let recipe = await Recipe.findOne().skip(randomNumber).exec();
+    res.render("recipe", { title: "Latest", recipe });
+  } catch (e) {}
+};
+
+exports.allRecipes = async (req, res) => {
+  try {
+    let recipes = await Recipe.find({});
+    res.render("reciperesults", { title: "All Recipes", recipes });
+  } catch (e) {}
+};
+
+exports.submitRecipe = async (req, res) => {
+  const infoErrors = req.flash("infoErrors");
+  const infoSubmit = req.flash("infoSubmit");
+
+  res.render("submitrecipe", {
+    title: "Submit Recipe",
+    infoSubmit,
+    infoErrors,
+  });
+};
+
+exports.submitRecipePost = async (req, res) => {
+  try {
+    let imageUploadFile;
+    let uploadPath;
+    let newImageName;
+    if (!req.files || Object.keys(req.files).length === 0) {
+      console.log("no files to upload");
+    } else {
+      imageUploadFile = req.files.image;
+      newImageName = Date.now() + imageUploadFile.name;
+
+      uploadPath =
+        require("path").resolve("") + "/public/uploads/" + newImageName;
+
+      imageUploadFile.mv(uploadPath, (e) => {
+        if (e) {
+          res.status(500).send(e);
+        }
+      });
+    }
+    const newRecipe = new Recipe({
+      name: req.body.recipename,
+      description: req.body.description,
+      email: req.body.email,
+      ingredients: req.body.ingredients,
+      category: req.body.category,
+      image: newImageName,
+    });
+    await newRecipe.save();
+    req.flash("infoSubmit", "Recipe has been added");
+    res.redirect("submitrecipe");
+  } catch (e) {
+    req.flash("infoErrors", e);
+    res.redirect("/submitrecipe");
+  }
 };
