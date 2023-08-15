@@ -4,7 +4,6 @@ const expressLayouts = require("express-ejs-layouts");
 require("dotenv").config();
 const fileUpload = require("express-fileupload");
 const session = require("express-session");
-console.log(fileUpload);
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 
