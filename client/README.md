@@ -1,1 +1,1 @@
-## RECIPE SPOT FRONTEND
+## Recipe Spot Frontend

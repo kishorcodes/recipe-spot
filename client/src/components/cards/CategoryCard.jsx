@@ -1,5 +1,5 @@
 import React from "react";
-
+import thai from "../../assets/images/thai-food.jpg";
 const CategoryCard = ({ category }) => {
   return (
     <a
@@ -8,7 +8,8 @@ const CategoryCard = ({ category }) => {
     >
       <div className="category__img shadow">
         <img
-          src={`img/${category.image}`}
+          //   src={`img/${category.image}`}
+          src={thai}
           alt={`${category.name} Food`}
           loading="lazy"
         />

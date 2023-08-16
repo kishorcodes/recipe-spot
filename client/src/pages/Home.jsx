@@ -6,6 +6,7 @@ import axios from "axios";
 import landingvideo from "../assets/videos/landingvideo.mp4";
 import CategoryCard from "../components/cards/CategoryCard";
 import RecipeCard from "../components/cards/RecipeCard";
+import publishRecipe from "../assets/images/publish-recipe.png";
 const Home = () => {
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -26,14 +27,14 @@ const Home = () => {
           <div className="px-5 col-12 col-lg-6" style={{ zIndex: 10 }}>
             <h1 className="display-5 fw-bold mb-3 text-white">
               Recipes at your finger tips!
-              <p className="lead my-2">
+              <p className="lead mt-3">
                 Explore our huge selection of delicious recipe ideas including
                 easy desserts, delicious vegan and vegetarian dinner ideas,
                 gorgeous pasta recipes, quick bakes, family-friendly meals and
                 gluten-free recipes.
               </p>
             </h1>
-            <div className="my-2 d-grid gap-2 d-md-flex justify-content-md-start justify-content-start">
+            <div className="mt-3 d-grid gap-2 d-md-flex justify-content-md-start justify-content-start">
               <a
                 href="/recipes/filter/latest"
                 className="btn btn-dark btn-lg px-4 me-md2"
@@ -41,7 +42,7 @@ const Home = () => {
                 Explore Latest
               </a>
               <a
-                href="/recipes/filter/random"
+                href="/recipes/random"
                 className="btn btn-primary btn-dark btn-lg px-4 me-md2"
               >
                 Show Random
@@ -150,7 +151,7 @@ const Home = () => {
 
         <section className="my-5 py-5 px-3 text-center">
           <img
-            src="img/publish-recipe.png"
+            src={publishRecipe}
             className="d-block mx-auto mb-4 img-fluid"
             alt="Publish Your recipe now"
             width="566"
@@ -165,7 +166,7 @@ const Home = () => {
 
             <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
               <a
-                href="/submitrecipe"
+                href="/submit"
                 className="btn btn-primary btn-dark btn-lg"
               >
                 Submit Recipe

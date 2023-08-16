@@ -23,7 +23,7 @@ const Navbar = () => {
           <a href="/recipes/filter/all">All Recipes</a>
         </li>
         <li>
-          <a href="/submitrecipe">Submit</a>
+          <a href="/submit">Submit</a>
         </li>
         <li>
           <a href="/aboutus">About Us</a>
