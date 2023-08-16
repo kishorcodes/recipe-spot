@@ -1,9 +1,11 @@
+const { log } = require("console");
 const Category = require("../models/Category");
 const Recipe = require("../models/Recipe");
 require("../config/dbConnect");
 
 exports.homepage = async (req, res) => {
   try {
+    console.log("hi");
     const limit = 5;
     const categories = await Category.find({}).limit(limit);
     const latest = await Recipe.find({}).sort({ _id: -1 }).limit(limit);
@@ -11,7 +13,7 @@ exports.homepage = async (req, res) => {
     const unique = await Recipe.find({}).sort({ _id: 1 }).limit(limit);
 
     const recipetypes = { latest, mostloved, unique };
-    res.render("index", {
+    res.status(200).json({
       title: "Recipe Spot - Home",
       categories,
       recipetypes,
