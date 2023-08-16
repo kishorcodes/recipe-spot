@@ -31,7 +31,7 @@ app.use(
 app.use(fileUpload());
 
 const routes = require("./routes/recipeRoutes.js");
-app.use("/", routes);
+app.use("/api/", routes);
 
 app.listen(port, () => {
   console.log("Server up at port " + port);

@@ -1,19 +1,28 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import chick from "../assets/images/southern-friend-chicken.jpg";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import MoonLoader from "react-spinners/MoonLoader";
+
+
 const Recipe = () => {
   const [recipe, setRecipe] = useState(null);
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    axios.get(`http://localhost:3001/recipes/${id}`).then((res) => {
+    setLoading(true);
+    axios.get(`/api/recipes/${id}`).then((res) => {
       setRecipe(res.data);
+      setLoading(false);
     });
-  });
+  }, []);
   return (
     <>
+      {loading && <MoonLoader></MoonLoader>}
+
       <Navbar></Navbar>
       <main>
         {recipe ? (
@@ -57,22 +66,21 @@ const Recipe = () => {
                       </a>
                     </i>
                   </div>
+                  <div class="row rounded">
+                    <div class="col-12">
+                      <h4>Ingredients</h4>
+                      <ul class="list-group list-group-flush">
+                        {recipe.ingredients.map((ingredient) => (
+                          <li class="list-group-item">{ingredient}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
 
-                  <div class="col-12">
+                  <div class="col-12 pt-4">
                     <h4>Cooking Instructions</h4>
 
                     <span>{recipe.description}</span>
-                  </div>
-                </div>
-
-                <div class="row pt-4 rounded">
-                  <div class="col-12">
-                    <h4>Ingredients</h4>
-                    <ul class="list-group list-group-flush">
-                      {recipe.ingredients.map((ingredient) => (
-                        <li class="list-group-item">{ingredient}</li>
-                      ))}
-                    </ul>
                   </div>
                 </div>
               </div>

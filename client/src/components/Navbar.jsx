@@ -1,6 +1,8 @@
 import React from "react";
 import logo from "../assets/images/logo.png";
+import { useNavigate } from "react-router-dom";
 const Navbar = () => {
+  const navigate = useNavigate();
   return (
     <nav className="navbar">
       <div className="menu-icon">
@@ -20,7 +22,19 @@ const Navbar = () => {
           <a href="/categories">Categories</a>
         </li>
         <li>
-          <a href="/recipes/filter/all">All Recipes</a>
+          <a
+            href="/recipes/filter/all"
+            onClick={() =>
+              navigate(`/recipes/filter/all`, {
+                state: {
+                  apiURL: `/api/recipes/filter/latest`,
+                  title: `Explore All Recipes`,
+                },
+              })
+            }
+          >
+            All Recipes
+          </a>
         </li>
         <li>
           <a href="/submit">Submit</a>

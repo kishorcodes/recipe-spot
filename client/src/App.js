@@ -20,6 +20,7 @@ function App() {
               path="/recipes/filter/:criteria"
               element={<Recipes />}
             ></Route>
+            <Route path="/categories/:id" element={<Recipes />}></Route>
             <Route path="/recipes/:id" element={<Recipe />}></Route>
           </Routes>
         </Router>

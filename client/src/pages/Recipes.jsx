@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import React, { useEffect, useState } from "react";
-import RecipeCard from "../components/cards/RecipeCard";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
+import Navbar from "../components/Navbar";
+import RecipeCard from "../components/cards/RecipeCard";
+import { useLocation } from "react-router-dom";
 const Recipes = () => {
+  const location = useLocation();
+
   const [recipes, setRecipes] = useState(null);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/recipes/filter/latest")
+      .get(location.state.apiURL)
       .then((res) => {
-        console.log("hi");
-
         setRecipes(res.data);
       })
       .catch((err) => {
@@ -23,7 +23,7 @@ const Recipes = () => {
       <Navbar></Navbar>
       <main>
         <section className="pb-4 pt-4 px-3">
-          <h1 className="pb-4">Search Results</h1>
+          <h1 className="pb-4">{location.state.title}</h1>
 
           <div className="d-flex mb-2 align-items-center"></div>
 
@@ -38,20 +38,6 @@ const Recipes = () => {
             ) : (
               <p>No Items Found</p>
             )}
-            {/* <% recipes.forEach(recipe=>{ %>
-    <a href="/recipes/<%=recipe._id %>" className="col text-center category__link">
-      <div className="category__img category__img--large shadow">
-        <img
-          src="/uploads/<%= recipe.image %>"
-          alt="<%= recipe.name %>"
-          loading="lazy"
-        />
-      </div>
-      <div className="pt-1"><%= recipe.name %></div>
-    </a>
-    <% }) %> <% }else {%>
-    <p className="lead">No Items Found</p>
-    <% } %> */}
           </div>
         </section>
       </main>

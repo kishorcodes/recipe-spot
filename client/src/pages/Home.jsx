@@ -1,27 +1,33 @@
-import React from "react";
-import Navbar from "../components/Navbar";
+import axios from "../utils/axios";
+import React, { useEffect, useState } from "react";
+import publishRecipe from "../assets/images/publish-recipe.png";
+import landingVideo from "../assets/videos/landingvideo.mp4";
 import Footer from "../components/Footer";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import landingvideo from "../assets/videos/landingvideo.mp4";
+import Navbar from "../components/Navbar";
 import CategoryCard from "../components/cards/CategoryCard";
 import RecipeCard from "../components/cards/RecipeCard";
-import publishRecipe from "../assets/images/publish-recipe.png";
+import viewAll from "../assets/images/view-all.jpg";
+import MoonLoader from "react-spinners/MoonLoader";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    axios.get("http://localhost:3001/").then((res) => {
+    setLoading(true);
+    axios.get("/api/").then((res) => {
+      setLoading(false);
       setData(res.data);
-      console.log(res.data);
-    }, []);
-  });
+    });
+  }, []);
   return (
     <div className="container-fluid px-0">
       <Navbar></Navbar>
+      {loading && <MoonLoader></MoonLoader>}
       <main>
         <div className="video-container">
           <video autoPlay muted loop>
-            <source src={landingvideo} type="video/mp4" />
+            <source src={landingVideo} type="video/mp4" />
           </video>
 
           <div className="px-5 col-12 col-lg-6" style={{ zIndex: 10 }}>
@@ -51,90 +57,133 @@ const Home = () => {
           </div>
         </div>
 
-        <section className="pb-4 pt-4 px-3">
-          <div className="d-flex mb-2 align-items-center">
-            <h2>Categories</h2>
-          </div>
-          <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-2 g-lg-3">
-            {data ? (
-              data.categories.map((category, index) => (
-                <CategoryCard key={index} category={category}></CategoryCard>
-              ))
-            ) : (
-              <p>No Categories Found</p>
-            )}
-
-            <a href="/categories" className="col text-center category__link">
-              <div className="category__img shadow">
-                <img src="img/view-all.jpg" alt="View all" loading="lazy" />
+        {data && (
+          <>
+            <section className="pb-4 pt-4 px-3">
+              <div className="d-flex mb-2 align-items-center">
+                <h2>Categories</h2>
               </div>
-              <div className="pt-1">View all</div>
-            </a>
-          </div>
-        </section>
+              <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-2 g-lg-3">
+                {data ? (
+                  data.categories.map((category, index) => (
+                    <CategoryCard
+                      key={index}
+                      category={category}
+                    ></CategoryCard>
+                  ))
+                ) : (
+                  <p>No Categories Found</p>
+                )}
 
-        <section className="pb-4 pt-4 px-3">
-          <div className="d-flex mb-2 align-items-center">
-            <h2>Latest Recipes</h2>
-            <a
-              href="/recipes/filter/latest"
-              className="ms-auto text-decoration-none"
-            >
-              View More
-            </a>
-          </div>
-          <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-lg-3">
-            {data ? (
-              data.recipetypes.latest.map((recipe, index) => (
-                <RecipeCard key={index} recipe={recipe} />
-              ))
-            ) : (
-              <p>No Items Found</p>
-            )}
-          </div>
-        </section>
+                <a
+                  href="/categories"
+                  className="col text-center category__link"
+                >
+                  <div className="category__img shadow">
+                    <img src={viewAll} alt="View all" loading="lazy" />
+                  </div>
+                  <div
+                    onClick={() =>
+                      navigate(`/recipes/all`, {
+                        state: {
+                          apiURL: `/api/recipes/all`,
+                          title: `Explore All Recipes`,
+                        },
+                      })
+                    }
+                    className="pt-1"
+                  >
+                    View all
+                  </div>
+                </a>
+              </div>
+            </section>
 
-        <section className="pb-4 pt-4 px-3">
-          <div className="d-flex mb-2 align-items-center">
-            <h2>Most Loved</h2>
-            <a
-              href="/recipes/filter/latest"
-              className="ms-auto text-decoration-none"
-            >
-              View More
-            </a>
-          </div>
-          <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-lg-3">
-            {data ? (
-              data.recipetypes.mostloved.map((recipe, index) => (
-                <RecipeCard key={index} recipe={recipe} />
-              ))
-            ) : (
-              <p>No Items Found</p>
-            )}
-          </div>
-        </section>
+            <section className="pb-4 pt-4 px-3">
+              <div className="d-flex mb-2 align-items-center">
+                <h2>Latest Recipes</h2>
+                <div
+                  onClick={() =>
+                    navigate(`/recipes/filter/latest`, {
+                      state: {
+                        apiURL: `/api/recipes/filter/latest`,
+                        title: `Explore Latest Recipes`,
+                      },
+                    })
+                  }
+                  className="ms-auto text-decoration-none"
+                >
+                  View More
+                </div>
+              </div>
+              <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-lg-3">
+                {data ? (
+                  data.recipetypes.latest.map((recipe, index) => (
+                    <RecipeCard key={index} recipe={recipe} />
+                  ))
+                ) : (
+                  <p>No Items Found</p>
+                )}
+              </div>
+            </section>
 
-        <section className="pb-4 pt-4 px-3">
-          <div className="d-flex mb-2 align-items-center">
-            <h2>Unique</h2>
-            <a
-              href="/recipes/filter/latest"
-              className="ms-auto text-decoration-none"
-            >
-              View More
-            </a>
-          </div>
-          <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-lg-3">
-            {data ? (
-              data.recipetypes.unique.map((recipe, index) => (
-                <RecipeCard key={index} recipe={recipe} />
-              ))
-            ) : (
-              <p>No Items Found</p>
-            )}
-          </div>
-        </section>
+            <section className="pb-4 pt-4 px-3">
+              <div className="d-flex mb-2 align-items-center">
+                <h2>Most Loved</h2>
+                <div
+                  onClick={() =>
+                    navigate(`/recipes/filter/latest`, {
+                      state: {
+                        apiURL: `/api/recipes/filter/latest`,
+                        title: `Explore Most Loved Recipes`,
+                      },
+                    })
+                  }
+                  className="ms-auto text-decoration-none"
+                >
+                  View More
+                </div>
+              </div>
+              <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-lg-3">
+                {data ? (
+                  data.recipetypes.mostloved.map((recipe, index) => (
+                    <RecipeCard key={index} recipe={recipe} />
+                  ))
+                ) : (
+                  <p>No Items Found</p>
+                )}
+              </div>
+            </section>
+
+            <section className="pb-4 pt-4 px-3">
+              <div className="d-flex mb-2 align-items-center">
+                <h2>Unique</h2>
+                <div
+                  onClick={() =>
+                    navigate(`/recipes/filter/latest`, {
+                      state: {
+                        apiURL: `/api/recipes/filter/latest`,
+                        title: `Explore  Unique Recipes`,
+                      },
+                    })
+                  }
+                  className="ms-auto text-decoration-none"
+                >
+                  View More
+                </div>
+              </div>
+              <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-2 g-lg-3">
+                {data ? (
+                  data.recipetypes.unique.map((recipe, index) => (
+                    <RecipeCard key={index} recipe={recipe} />
+                  ))
+                ) : (
+                  <p>No Items Found</p>
+                )}
+              </div>
+            </section>
+          </>
+        )}
 
         <section className="section section-contact">
           <h1 className="heading-sendus">
@@ -165,10 +214,7 @@ const Home = () => {
             </p>
 
             <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-              <a
-                href="/submit"
-                className="btn btn-primary btn-dark btn-lg"
-              >
+              <a href="/submit" className="btn btn-primary btn-dark btn-lg">
                 Submit Recipe
               </a>
             </div>

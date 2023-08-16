@@ -1,7 +1,14 @@
-import { useState, useEffect } from "react";
-import Navbar from "../components/Navbar";
+import { useRef, useState } from "react";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 const SubmitRecipe = () => {
+  const [email, setEmail] = useState("");
+  const [recipeName, setRecipeName] = useState("");
+  const [description, setDescription] = useState("");
+  const [ingredients, setIngredients] = useState([]);
+  const [category, setCategory] = useState("Thai");
+  const [image, setImage] = useState();
+  const ingredientInputRef = useRef(null);
   return (
     <>
       <Navbar></Navbar>
@@ -19,53 +26,45 @@ const SubmitRecipe = () => {
 
           <div class="row justify-content-center">
             <div class="col-8">
-              {/* <% if(infoSubmit !='') { %>
-      <div class="alert alert-success" role="alert"><%= infoSubmit %></div>
-      <%} %> <% if(infoErrors !='') { %>
-      <div class="alert alert-danger" role="alert">
-        <%= infoErrors[0].message %>
-      </div>
-      <%} %> */}
-
               <div class="row g-3">
                 <div class="col-12">
-                  <label for="email" class="form-label">
+                  <label htmlFor="email" class="form-label">
                     Email
                   </label>
                   <input
                     class="form-control"
                     type="email"
-                    name="email"
-                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
 
                 <div class="col-12">
-                  <label for="recipename" class="form-label">
+                  <label htmlFor="recipename" class="form-label">
                     Recipe Name
                   </label>
                   <input
                     class="form-control"
                     type="text"
-                    name="recipename"
-                    id="name"
+                    value={recipeName}
+                    onChange={(e) => setRecipeName(e.target.value)}
                   />
                 </div>
 
                 <div class="col-12">
-                  <label for="description" class="form-label">
+                  <label htmlFor="description" class="form-label">
                     Description
                   </label>
                   <textarea
-                    name="description"
-                    id="description"
                     cols="30"
                     rows="4"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     class="form-control"
                   ></textarea>
                 </div>
                 <div class="col-12">
-                  <label for="ingredients" class="form-label">
+                  <label htmlFor="ingredients" class="form-label">
                     Ingredients
                   </label>
                   <br />
@@ -73,6 +72,7 @@ const SubmitRecipe = () => {
                   <div class="ingredientList">
                     <div class="ingredientDiv mb-1"></div>
                     <input
+                      ref={ingredientInputRef}
                       placeholder="Enter the ingredient"
                       type="text"
                       name="ingredients"
@@ -85,20 +85,27 @@ const SubmitRecipe = () => {
                     id="addIngredientsBtn"
                     type="button"
                     class="btn btn-outline-primary"
+                    onClick={() => {
+                      setIngredients([
+                        ...ingredients,
+                        ingredientInputRef.current.value,
+                      ]);
+                      ingredientInputRef.current.value = "";
+                      console.log(ingredients);
+                    }}
                   >
                     + Ingredient
                   </button>
                 </div>
                 <div class="col-12">
-                  <label for="category">Select Category</label>
+                  <label htmlFor="category">Select Category</label>
                   <select
                     class="form-select form-control"
                     name="category"
-                    ariaLabel="Category"
+                    aria-label="Category"
                   >
-                    <option value="Thai">Thai</option>
+                    <option value="Thai" >Thai</option>
                     <option value="American">American</option>
-
                     <option value="Chinese">Chinese</option>
                     <option value="Mexican">Mexican</option>
                     <option value="Indian">Indian</option>
@@ -106,7 +113,7 @@ const SubmitRecipe = () => {
                 </div>
 
                 <div class="col-12">
-                  <label for="image">Item Image</label>
+                  <label htmlFor="image">Item Image</label>
                   <input
                     type="file"
                     class="form-control"

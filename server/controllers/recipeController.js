@@ -49,12 +49,13 @@ exports.exploreRecipe = async (req, res) => {
 
 exports.exploreCategoryById = async (req, res) => {
   try {
+    console.log("bro");
     let categoryId = req.params.id;
     const limit = 20;
-    const categoryById = await Recipe.find({
+    const recipes = await Recipe.find({
       category: categoryId,
     }).limit(limit);
-    res.status(200).json({ categoryById: categoryById || [] });
+    res.status(200).json(recipes || []);
   } catch (e) {
     res.status(500).json({
       message: "Category Not found",
@@ -78,8 +79,10 @@ exports.searchRecipe = async (req, res) => {
 
 exports.exploreLatest = async (req, res) => {
   try {
+    console.log("shit");
     const limit = 20;
     const recipes = await Recipe.find({}).sort({ _id: -1 }).limit(limit);
+    console.log(recipes);
     res.status(200).json(recipes);
   } catch (e) {
     res.status(500).json({
